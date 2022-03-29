@@ -3,10 +3,12 @@ name: "Run Unit Tests"
 on:
   push:
     branches:
-    - main
-    - development
+      - main
+
   pull_request:
-    - main
+    branches:
+      - main
+
   workflow_dispatch:
 
 jobs:
