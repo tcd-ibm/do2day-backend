@@ -1,0 +1,29 @@
+me: "Run Unit Tests"
+
+on:
+  push:
+    branches:
+    - main
+    - development
+  pull_request:
+    - main
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+	    uses: actions/checkout@v2
+	  
+	  - name: Setup node	
+        uses: actions/setup-node@v1
+          with:
+            node-version: 12
+      
+	  - name: Install dependencies
+		run: npm ci
+      
+	  - name: Run unit tests
+		run: npm test
+
