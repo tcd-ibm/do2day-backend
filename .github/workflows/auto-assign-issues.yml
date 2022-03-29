@@ -1,7 +1,7 @@
 name: "Auto-assign Issues"
 
 on:
-  issue:
+  issues:
     types:
       - opened
   workflow_dispatch:
