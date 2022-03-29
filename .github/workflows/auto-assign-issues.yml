@@ -1,0 +1,15 @@
+name: "Auto Assign Issues"
+
+on:
+  issue:
+    types:
+      - opened
+  workflow_dispatch:
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo "Hello World!"
+
