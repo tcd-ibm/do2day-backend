@@ -1,3 +1,14 @@
+# This workflow automatically assigns new cards to the specified GitHub Project Board and then
+# randomly assigns the issue to two members on the specified team.
+
+# To use this workflow, a number of secrets must be configured:
+# 1. PERSONAL_ACCESS_TOKEN - this is a GitHub personal access token that the user must generate 
+#							 with repo and admin:org scopes
+# 2. ORGANISATION_NAME - the name of the organisation in which the project board is present
+# 3. PROJECT_NAME - the name of the project board into which cards should be created
+# 4. COLUMN_NAME - the name of the column into which cards should be created
+# 5. TEAM_NAME - the name of the team from which two members will be assigned to the issue
+
 name: Auto-assign Issues
 
 on:
