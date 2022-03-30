@@ -59,15 +59,15 @@ jobs:
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{secrets.PAT}}
           project-location: tcd-ibm
-          project-number: 3
+          project-number: 4
           column-name: Backlog
           
       - name: Auto-assign issue to team
         uses: pozil/auto-assign-issue@v1.4.0
         with:
-          repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repo-token: ${{secrets.PERSONAL_ACCESS_TOKEN}}
           teams: ${{ secrets.TEAM_NAME }}
           numOfAssignee: 2
         
