@@ -7,6 +7,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+
+env:
+  IMAGE_NAME: sweng/do2day_backend
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -19,11 +23,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
-      - name: Determine app name	
-        if: env.APP_NAME == ''
-        run: |
-          echo "APP_NAME=$(basename $PWD)" | tee -a $GITHUB_ENV
-      
       - name: Determine image tags
         if: env.IMAGE_TAGS == ''
         run: |
