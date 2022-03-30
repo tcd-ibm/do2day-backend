@@ -1,0 +1,73 @@
+# This workflow automatically assigns new cards to the specified GitHub Project Board and then
+# randomly assigns the issue to two members on the specified team.
+
+# To use this workflow, a number of secrets must be configured:
+# 1. PERSONAL_ACCESS_TOKEN - this is a GitHub personal access token that the user must generate 
+#							 with repo and admin:org scopes
+# 2. ORGANISATION_NAME - the name of the organisation in which the project board is present
+# 3. PROJECT_NAME - the name of the project board into which cards should be created
+# 4. COLUMN_NAME - the name of the column into which cards should be created
+# 5. TEAM_NAME - the name of the team from which two members will be assigned to the issue
+
+name: Auto-assign Issues
+
+on:
+  issues:
+    types: [ opened ]
+  workflow_dispatch:
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for required secrets
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const secrets = 
+            {
+              PERSONAL_ACCESS_TOKEN: `${{ secrets.PERSONAL_ACCESS_TOKEN }}`,
+              ORGANISATION_NAME: `${{ secrets.ORGANISATION_NAME }}`,
+              PROJECT_NAME: `${{ secrets.PROJECT_NAME }}`,
+              COLUMN_NAME: `${{ secrets.COLUMN_NAME }}`,
+              TEAM_NAME: `${{ secrets.TEAM_NAME }}`,
+            };
+
+            const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => 
+            {
+              if(value.length === 0) 
+              {
+                core.error(`Secret "${name}" is not set`);
+              }
+              else
+              {
+                core.info(`✔️ Secret "${name}" is set`);
+              }
+              
+              return;
+            });
+
+            if(missingSecrets.length > 0) 
+            {
+              core.setFailed(`❌ At least one required secret is not set in the repository. \n`);
+            }
+            else 
+            {
+              core.info(`✅ All the required secrets are set`);
+            }
+            
+      - name: Create project card
+        uses: peter-evans/create-or-update-project-card@v2
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          project-location: ${{ secrets.ORGANISATION_NAME }}
+          project-name: ${{ secrets.PROJECT_NAME }}
+          column-name: ${{ secrets.COLUMN_NAME }}
+          
+      - name: Auto-assign issue to team
+        uses: pozil/auto-assign-issue@v1.4.0
+        with:
+          repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          teams: ${{ secrets.TEAM_NAME }}
+          numOfAssignee: 2
+        
