@@ -61,7 +61,7 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           project-location: ${{ secrets.ORGANISATION_NAME }}
-          project-name: ${{ secrets.PROJECT_NAME }}
+          project-number: 4
           column-name: ${{ secrets.COLUMN_NAME }}
           
       - name: Auto-assign issue to team
