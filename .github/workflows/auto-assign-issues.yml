@@ -57,12 +57,13 @@ jobs:
             }
             
       - name: Create or Update Project Card
-        uses: peter-evans/create-or-update-project-card@v1
+        uses: peter-evans/create-or-update-project-card@v2
         with:
           token: ${{secrets.PAT}}
           project-location: tcd-ibm
-          project-number: 4
+          project-name: Do2Day Backend Kanban Board
           column-name: Backlog
+          issue-number: 1
           
       - name: Auto-assign issue to team
         uses: pozil/auto-assign-issue@v1.4.0
