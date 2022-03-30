@@ -1,4 +1,4 @@
-name: "Auto-assign Issues"
+name: Auto-assign Issues
 
 on:
   issues:
@@ -44,3 +44,11 @@ jobs:
             {
               core.info(`✅ All the required secrets are set`);
             }
+          
+      - name: Auto-assign issue to team
+        uses: pozil/auto-assign-issue@v1.4.0
+        with:
+          repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          teams: ${{ secrets.TEAM_NAME }}
+          numOfAssignee: 2
+        
