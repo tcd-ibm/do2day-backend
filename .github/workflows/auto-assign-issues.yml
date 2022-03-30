@@ -61,7 +61,7 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           project-location: tcd-ibm
-          project-number: 4
+          project-number: 3
           column-name: Backlog
           
       - name: Auto-assign issue to team
