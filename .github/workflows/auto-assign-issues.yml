@@ -59,7 +59,7 @@ jobs:
       - name: Create project card
         uses: peter-evans/create-or-update-project-card@v1
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: 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
           project-location: tcd-ibm
           project-number: 4
           column-name: Backlog
