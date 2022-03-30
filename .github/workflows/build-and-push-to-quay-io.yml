@@ -31,7 +31,7 @@ jobs:
       - name: Build from Dockerfile
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ${{ env.APP_NAME }}
+          image: ${{ env.IMAGE_NAME }}
           tags: ${{ env.IMAGE_TAGS }}
           dockerfiles: |
             ./Dockerfile
