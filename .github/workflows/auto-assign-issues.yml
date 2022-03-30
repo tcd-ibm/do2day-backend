@@ -60,8 +60,8 @@ jobs:
         uses: peter-evans/create-or-update-project-card@v2
         with:
           token: ${{secrets.PAT}}
-          project-location: ${{secrets.PROJECT_NAME}}
-          project-name: ${{secrets.ORGANISATION_NAME}}
+          project-location: ${{secrets.ORGANISATION_NAME}}
+          project-name: ${{secrets.PROJECT_NAME}}
           column-name: ${{secrets.COLUMN_NAME}}
           issue-number: 1
           
