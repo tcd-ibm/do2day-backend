@@ -56,7 +56,7 @@ jobs:
               core.info(`✅ All the required secrets are set`);
             }
             
-      - name: Create project card
+      - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
