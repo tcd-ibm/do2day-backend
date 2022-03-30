@@ -10,7 +10,7 @@ on:
 
 env:
   IMAGE_REGISTRY_NAME: quay.io
-  IMAGE_NAME: sweng/do2day_backend
+  IMAGE_NAME: do2day/backend
 
 jobs:
   build-and-push:
