@@ -41,5 +41,5 @@ jobs:
           tags: ${{ steps.build-image.outputs.tags }}
           registry: ${{ env.IMAGE_REGISTRY_NAME }}
           username: ${{ env.IMAGE_REGISTRY_USERNAME }}
-          password: ${{ env.REGISTRY_PASSWORD }} 
+          password: ${{ env.IMAGE_REGISTRY_PASSWORD }} 
 
