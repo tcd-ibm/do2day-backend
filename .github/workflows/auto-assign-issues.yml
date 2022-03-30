@@ -60,9 +60,9 @@ jobs:
         uses: peter-evans/create-or-update-project-card@v2
         with:
           token: ${{secrets.PAT}}
-          project-location: tcd-ibm
-          project-name: Do2Day Backend Kanban Board
-          column-name: Backlog
+          project-location: ${{secrets.PROJECT_NAME}}
+          project-name: ${{secrets.ORGANISATION_NAME}}
+          column-name: ${{secrets.COLUMN_NAME}}
           issue-number: 1
           
       - name: Auto-assign issue to team
