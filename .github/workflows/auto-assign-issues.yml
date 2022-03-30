@@ -2,14 +2,45 @@ name: "Auto-assign Issues"
 
 on:
   issues:
-    types:
-      - opened
+    types: [ opened ]
   workflow_dispatch:
 
 jobs:
   auto-assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-        run: echo "Hello World!"
+      - name: Check for required secrets
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const secrets = 
+            {
+              PERSONAL_ACCESS_TOKEN: `${{ secrets.PERSONAL_ACCESS_TOKEN }}`,
+              ORGANISATION_NAME: `${{ secrets.ORGANISATION_NAME }}`,
+              PROJECT_NAME: `${{ secrets.PROJECT_NAME }}`,
+              COLUMN_NAME: `${{ secrets.COLUMN_NAME }}`,
+              TEAM_NAME: `${{ secrets.TEAM_NAME }}`,
+            };
 
+            const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => 
+            {
+              if(value.length === 0) 
+              {
+                core.error(`Secret "${name}" is not set`);
+              }
+              else
+              {
+                core.info(`✔️ Secret "${name}" is set`);
+              }
+              
+              return;
+            });
+
+            if(missingSecrets.length > 0) 
+            {
+              core.setFailed(`❌ At least one required secret is not set in the repository. \n`);
+            }
+            else 
+            {
+              core.info(`✅ All the required secrets are set`);
+            }
