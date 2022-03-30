@@ -14,11 +14,6 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    
-    outputs:
-      ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
-      SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -29,6 +24,7 @@ jobs:
           echo "IMAGE_TAGS=latest ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
       
       - name: Build from Dockerfile
+        id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.APP_NAME }}
