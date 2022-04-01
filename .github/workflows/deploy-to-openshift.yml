@@ -1,5 +1,8 @@
 name: Deploy to OpenShift cluster
-
+env:
+  OPENSHIFT_NAMESPACE: ""
+  APP_NAME: "backend"
+  APP_PORT: 8080
 on:
   workflow_run:
     workflows: ["Build container image and push to quay.io"]
@@ -27,16 +30,16 @@ jobs:
           openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
           insecure_skip_tls_verify: true
-          namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
       - name: Create and expose app
         id: deploy-and-expose
         uses: redhat-actions/oc-new-app@v1
         with:
-          app_name: ${{ secrets.APP_NAME }}
+          app_name: ${{ env.APP_NAME }}
           image: quay.io/do2day/backend
           namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
-          port: ${{ secrets.APP_PORT }}
+          port: ${{ env.APP_PORT }}
 
       - name: Print application URL
         env:
@@ -49,4 +52,4 @@ jobs:
           echo ${{ env.ROUTE }}
           echo "==================================================================================="
           echo
-          echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""# Î#
+          echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""# ÃŽ#
