@@ -17,15 +17,16 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Build Docker Image	
-        run: docker build -t your/image-to-test .
+        run: docker build -t backend .
       
       - name: Run Snyk to check Docker image for vulnerabilities
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: your/image-to-test
-          args: --file=Dockerfile
+          image: backend
+          args: --file=Dockerfile 
+                --severity-threshold=high
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
