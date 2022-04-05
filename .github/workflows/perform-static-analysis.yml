@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Build Docker Image	
-        run: docker build -t your/image-to-test
+        run: docker build -t your/image-to-test .
       
       - name: Run Snyk to check Docker image for vulnerabilities
         uses: snyk/actions/docker@master
