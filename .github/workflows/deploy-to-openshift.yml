@@ -1,0 +1,55 @@
+name: Deploy to OpenShift cluster
+env:
+  OPENSHIFT_NAMESPACE: ""
+  APP_NAME: "backend"
+  APP_PORT: 8080
+on:
+  workflow_run:
+    workflows: ["Build container image and push to quay.io"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:   
+  deploy-to-openshift:
+      runs-on: ubuntu-latest
+
+      outputs:
+        ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
+        SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
+ 
+      steps:
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: 4
+ 
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+
+      - name: Create and expose app
+        id: deploy-and-expose
+        uses: redhat-actions/oc-new-app@v1
+        with:
+          app_name: ${{ env.APP_NAME }}
+          image: quay.io/do2day/backend
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          port: ${{ env.APP_PORT }}
+
+      - name: Print application URL
+        env:
+          ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
+          SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
+        run: |
+          [[ -n ${{ env.ROUTE }} ]] || (echo "Determining application route failed in previous step"; exit 1)
+          echo
+          echo "======================== Your application is available at: ========================"
+          echo ${{ env.ROUTE }}
+          echo "==================================================================================="
+          echo
+          echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""# Î#
