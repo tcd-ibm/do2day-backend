@@ -19,6 +19,39 @@ jobs:
         SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
  
       steps:
+      - name: Check for required secrets
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const secrets = 
+            {
+              OPENSHIFT_SERVER: `${{ secrets.OPENSHIFT_SERVER }}`,
+              OPENSHIFT_TOKEN: `${{ secrets.OPENSHIFT_TOKEN }}`,
+            };
+
+            const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => 
+            {
+              if(value.length === 0) 
+              {
+                core.error(`Secret "${name}" is not set`);
+              }
+              else
+              {
+                core.info(`✔️ Secret "${name}" is set`);
+              }
+              
+              return;
+            });
+
+            if(missingSecrets.length > 0) 
+            {
+              core.setFailed(`❌ At least one required secret is not set in the repository. \n`);
+            }
+            else 
+            {
+              core.info(`✅ All the required secrets are set`);
+            }
+
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
