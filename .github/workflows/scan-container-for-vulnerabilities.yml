@@ -57,7 +57,7 @@ jobs:
         with:
           image: backend
           args: --file=Dockerfile 
-                --severity-threshold=high
+                --severity-threshold=critical
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
