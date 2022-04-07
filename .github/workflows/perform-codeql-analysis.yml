@@ -11,11 +11,6 @@ jobs:
   run-codeql:
     runs-on: ubuntu-latest
     
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript' ]
-
     steps: 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -23,7 +18,7 @@ jobs:
       - name: Initialise CodeQL	
         uses: github/codeql-action/init@v2
         with:
-          languages: {{ matrix.language }}
+          languages: javascript
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
