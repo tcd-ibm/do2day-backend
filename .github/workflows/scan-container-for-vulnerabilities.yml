@@ -1,4 +1,4 @@
-name: Build container image and push to quay.io
+name: Scan Docker container for vulnerabilities
 
 on:
   push:
@@ -7,12 +7,8 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-env:
-  IMAGE_REGISTRY_NAME: quay.io
-  IMAGE_NAME: do2day/backend
-
 jobs:
-  build-and-push:
+  run-snyk:
     runs-on: ubuntu-latest
     steps:
       - name: Check for required secrets
@@ -21,8 +17,7 @@ jobs:
           script: |
             const secrets = 
             {
-              ROBOT_ACCOUNT_NAME: `${{ secrets.ROBOT_ACCOUNT_NAME }}`,
-              IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
+              SNYK_TOKEN: `${{ secrets.SNYK_TOKEN }}`,
             };
 
             const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => 
@@ -48,29 +43,24 @@ jobs:
               core.info(`✅ All the required secrets are set`);
             }
 
+
       - name: Checkout repository
         uses: actions/checkout@v2
         
-      - name: Determine image tags
-        if: env.IMAGE_TAGS == ''
-        run: |
-          echo "IMAGE_TAGS=latest ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
+      - name: Build Docker Image	
+        run: docker build -t backend .
       
-      - name: Build from Dockerfile
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
+      - name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ${{ env.IMAGE_NAME }}
-          tags: ${{ env.IMAGE_TAGS }}
-          dockerfiles: |
-            ./Dockerfile
+          image: backend
+          args: --file=Dockerfile 
+                --severity-threshold=critical
 
-      - name: Push to registry
-        uses: redhat-actions/push-to-registry@v2
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
         with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
-          registry: ${{ env.IMAGE_REGISTRY_NAME }}
-          username: ${{ secrets.ROBOT_ACCOUNT_NAME }}
-          password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }} 
+          sarif_file: snyk.sarif
 

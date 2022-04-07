@@ -1,18 +1,16 @@
-FROM node:16
+# Use secure node base image
+FROM node:current-stretch-slim
 
 # Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy package.json and package-lock.json into container
 COPY package*.json ./
 
+# Install node dependencies
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
 
-# Bundle app source
+# Copy current directory into container
 COPY . .
 
 EXPOSE 8080

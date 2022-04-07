@@ -1,8 +1,10 @@
 name: Deploy to OpenShift cluster
+
 env:
   OPENSHIFT_NAMESPACE: ""
   APP_NAME: "backend"
   APP_PORT: 8080
+
 on:
   workflow_run:
     workflows: ["Build container image and push to quay.io"]
