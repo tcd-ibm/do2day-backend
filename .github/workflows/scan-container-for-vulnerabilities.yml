@@ -1,4 +1,4 @@
-name: Perform Static Analysis
+name: Scan Docker container for vulnerabilities
 
 on:
   push:
@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-  schedule:
-    - cron: '0 18 * * *'
 
 jobs:
   run-snyk:
