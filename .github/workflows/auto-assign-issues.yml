@@ -9,7 +9,7 @@
 # 4. COLUMN_NAME - the name of the column into which cards should be created
 # 5. TEAM_NAME - the name of the team from which two members will be assigned to the issue
 
-name: Auto-assign Issues
+name: Auto-assign issues
 
 on:
   issues:
