@@ -1,5 +1,6 @@
 # Use most secure node image possible
-FROM node:17.8-bullseye-slim
+#FROM node:17.8-bullseye-slim
+FROM node:latest
 
 # Create app directory
 WORKDIR /usr/src/app
