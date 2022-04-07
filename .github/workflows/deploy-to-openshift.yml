@@ -76,6 +76,10 @@ jobs:
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           port: ${{ env.APP_PORT }}
 
+      - name: Set MongoDB URI 
+        run: |
+          oc set env deployment.apps/backend MONGO_URI=${{ secrets.MONGO_URI }}
+
       - name: Print application URL
         env:
           ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
