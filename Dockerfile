@@ -1,6 +1,4 @@
-# Use most secure node image possible
-#FROM node:17.8-bullseye-slim
-#FROM node:latest
+# Use secure node base image
 FROM node:current-stretch-slim
 
 # Create app directory
