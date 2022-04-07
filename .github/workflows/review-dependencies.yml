@@ -1,0 +1,17 @@
+name: Review dependencies
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  review-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Review dependencies	
+        uses: actions/dependency-review-action@v1
+
